@@ -1,0 +1,143 @@
+{
+	"formatVersion": 3,
+	"modifications": [
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "Book",
+				"primary": "id",
+				"primaryColumn": "id",
+				"unique": {},
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"tableName": "book"
+			}
+		},
+		{
+			"modification": "createEntity",
+			"entity": {
+				"name": "Author",
+				"primary": "id",
+				"primaryColumn": "id",
+				"unique": {},
+				"fields": {
+					"id": {
+						"name": "id",
+						"columnName": "id",
+						"nullable": false,
+						"type": "Uuid",
+						"columnType": "uuid"
+					}
+				},
+				"tableName": "author"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Book",
+			"field": {
+				"name": "title",
+				"columnName": "title",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createColumn",
+			"entityName": "Author",
+			"field": {
+				"name": "name",
+				"columnName": "name",
+				"nullable": false,
+				"type": "String",
+				"columnType": "text"
+			}
+		},
+		{
+			"modification": "createRelation",
+			"entityName": "Book",
+			"owningSide": {
+				"name": "author",
+				"inversedBy": "books",
+				"nullable": false,
+				"type": "ManyHasOne",
+				"target": "Author",
+				"joiningColumn": {
+					"columnName": "author_id",
+					"onDelete": "restrict"
+				}
+			},
+			"inverseSide": {
+				"name": "books",
+				"ownedBy": "author",
+				"type": "OneHasMany",
+				"target": "Book"
+			}
+		},
+		{
+			"modification": "patchAclSchema",
+			"patch": [
+				{
+					"op": "add",
+					"path": "/roles/admin",
+					"value": {
+						"variables": {},
+						"stages": "*",
+						"entities": {
+							"Book": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"title": true,
+										"author": true
+									},
+									"read": {
+										"id": true,
+										"title": true,
+										"author": true
+									},
+									"update": {
+										"id": true,
+										"title": true,
+										"author": true
+									},
+									"delete": true
+								}
+							},
+							"Author": {
+								"predicates": {},
+								"operations": {
+									"create": {
+										"id": true,
+										"name": true,
+										"books": true
+									},
+									"read": {
+										"id": true,
+										"name": true,
+										"books": true
+									},
+									"update": {
+										"id": true,
+										"name": true,
+										"books": true
+									},
+									"delete": true
+								}
+							}
+						}
+					}
+				}
+			]
+		}
+	]
+}
